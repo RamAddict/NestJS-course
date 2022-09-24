@@ -1,4 +1,4 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -8,6 +8,7 @@ import { User } from './users/user.entity';
 import Report from './reports/report.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './inerceptors/logging.interceptor';
+import { GenericClassSerializerInterceptor } from './inerceptors/generic-class-serializer.interceptor';
 
 @Module({
     imports: [
@@ -24,7 +25,8 @@ import { LoggingInterceptor } from './inerceptors/logging.interceptor';
     providers: [
         AppService,
         { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
-        { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+        // { provide: APP_INTERCEPTOR, useClass: GenericClassSerializerInterceptor},
+
     ],
 })
 export class AppModule {}
