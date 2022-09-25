@@ -1,6 +1,10 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor, UseInterceptors } from '@nestjs/common';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { map, Observable } from 'rxjs';
+
+export function Serialize<T>(dto: ClassConstructor<T>) {
+    return UseInterceptors(new GenericClassSerializerInterceptor(dto));
+}
 
 @Injectable()
 export class GenericClassSerializerInterceptor<T> implements NestInterceptor {

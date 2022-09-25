@@ -1,21 +1,11 @@
-import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    NotFoundException,
-    Param,
-    Patch,
-    Post,
-    Query,
-    UseInterceptors,
-} from '@nestjs/common';
-import { GenericClassSerializerInterceptor } from 'src/inerceptors/generic-class-serializer.interceptor';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
+import { Serialize } from 'src/inerceptors/generic-class-serializer.interceptor';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
+@Serialize(UserDto)
 @Controller('auth')
 export class UsersController {
     constructor(private usersService: UsersService) {}
@@ -25,7 +15,6 @@ export class UsersController {
         return await this.usersService.create(body);
     }
     @Get('/:id')
-    @UseInterceptors(new GenericClassSerializerInterceptor(UserDto))
     async findUser(@Param('id') id: string) {
         const user = this.usersService.findOne(Number.parseInt(id));
         if (user) {
