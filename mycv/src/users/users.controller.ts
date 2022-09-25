@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session } from '@nestjs/common';
 import { Serialize } from 'src/inerceptors/generic-class-serializer.interceptor';
+import { AuthService } from './auth/auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
@@ -8,11 +9,23 @@ import { UsersService } from './users.service';
 @Serialize(UserDto)
 @Controller('auth')
 export class UsersController {
-    constructor(private usersService: UsersService) {}
+    constructor(private usersService: UsersService, private authService: AuthService) {}
 
+    @Get('/colors/:color')
+    setColor(@Param('color') color: string, @Session() session: any) {
+        session.color = color;
+    }
+    @Get('/colors')
+    getColor(@Session() session: any) {
+        return session.color;
+    }
     @Post('/signup')
     async createUser(@Body() body: CreateUserDto) {
-        return await this.usersService.create(body);
+        return this.authService.signUp(body.email, body.password);
+    }
+    @Post('/signin')
+    async signIn(@Body() body: CreateUserDto) {
+        return this.authService.signIn(body.email, body.password);
     }
     @Get('/:id')
     async findUser(@Param('id') id: string) {
