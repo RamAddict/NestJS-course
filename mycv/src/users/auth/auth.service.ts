@@ -20,7 +20,7 @@ export class AuthService {
         const result = salt + '.' + hash.toString('hex');
         const newUser = new CreateUserDto(email, result);
         console.log(newUser);
-        await this.usersService.create(newUser);
+        return await this.usersService.create(newUser);
     }
 
     async signIn(email: string, password: string) {

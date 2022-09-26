@@ -11,6 +11,13 @@ import { UsersService } from './users.service';
 export class UsersController {
     constructor(private usersService: UsersService, private authService: AuthService) {}
 
+    @Get('/whoami')
+    async whoAmI(@Session() session: any) {
+        const user = await this.usersService.findOne(session.userId);
+        if (!user) throw new NotFoundException("no user found")
+        return user;
+    }
+
     @Get('/colors/:color')
     setColor(@Param('color') color: string, @Session() session: any) {
         session.color = color;
@@ -20,13 +27,23 @@ export class UsersController {
         return session.color;
     }
     @Post('/signup')
-    async createUser(@Body() body: CreateUserDto) {
-        return this.authService.signUp(body.email, body.password);
+    async createUser(@Body() body: CreateUserDto, @Session() session: any) {
+        const user = await this.authService.signUp(body.email, body.password);
+        session.userId = user.id;
+        return user;
     }
     @Post('/signin')
-    async signIn(@Body() body: CreateUserDto) {
-        return this.authService.signIn(body.email, body.password);
+    async signIn(@Body() body: CreateUserDto, @Session() session: any) {
+        const user = await this.authService.signIn(body.email, body.password);
+        session.userId = user.id;
+        return user;
     }
+
+    @Post('/signout')
+    signOut(@Session() session: any) {
+        session.userId = null;
+    }
+
     @Get('/:id')
     async findUser(@Param('id') id: string) {
         const user = this.usersService.findOne(Number.parseInt(id));
