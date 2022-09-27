@@ -7,8 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import Report from './reports/report.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from './inerceptors/logging.interceptor';
-import { GenericClassSerializerInterceptor } from './inerceptors/generic-class-serializer.interceptor';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 @Module({
     imports: [

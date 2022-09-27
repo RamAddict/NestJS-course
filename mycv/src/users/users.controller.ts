@@ -1,20 +1,22 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session } from '@nestjs/common';
-import { Serialize } from 'src/inerceptors/generic-class-serializer.interceptor';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session, UseInterceptors } from '@nestjs/common';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { CurrentUserInterceptor } from 'src/interceptors/current-user.interceptor';
+import { Serialize } from 'src/interceptors/generic-class-serializer.interceptor';
 import { AuthService } from './auth/auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Serialize(UserDto)
 @Controller('auth')
+@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
     constructor(private usersService: UsersService, private authService: AuthService) {}
 
     @Get('/whoami')
-    async whoAmI(@Session() session: any) {
-        const user = await this.usersService.findOne(session.userId);
-        if (!user) throw new NotFoundException("no user found")
+    async whoAmI(@CurrentUser() user: User) {
         return user;
     }
 

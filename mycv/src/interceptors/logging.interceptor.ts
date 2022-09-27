@@ -12,6 +12,16 @@ export class LoggingInterceptor implements NestInterceptor {
         const path = this.reflector.get<String[]>(PATH_METADATA, context.getHandler());
         const method = (context.switchToHttp().getRequest() as Request).method;
         console.log(`Received ${method} at ${path}`);
-        return next.handle().pipe(tap(() => console.log(`Finished ${method} at ${path} after ${Date.now() - now}ms`)));
+        return next
+            .handle()
+            .pipe(
+                tap(() =>
+                    console.log(
+                        `Finished ${method} at ${path} with code ${
+                            context.switchToHttp().getResponse().statusCode
+                        } after ${Date.now() - now}ms`,
+                    ),
+                ),
+            );
     }
 }
