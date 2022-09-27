@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { CurrentUserInterceptor } from 'src/interceptors/current-user.interceptor';
 import { Serialize } from 'src/interceptors/generic-class-serializer.interceptor';
 import { AuthService } from './auth/auth.service';
@@ -16,6 +17,7 @@ export class UsersController {
     constructor(private usersService: UsersService, private authService: AuthService) {}
 
     @Get('/whoami')
+    @UseGuards(AuthGuard)
     async whoAmI(@CurrentUser() user: User) {
         return user;
     }
