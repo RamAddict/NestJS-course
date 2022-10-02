@@ -8,9 +8,18 @@ describe('AuthService', () => {
     let fakeUsersService: Partial<UsersService>;
     beforeEach(async () => {
         // Create fake copy of users service
+        const users: User[] = [];
         fakeUsersService = {
-            find: () => Promise.resolve([]),
-            create: (user: User) => Promise.resolve({ id: 1, email: user.email, password: user.password } as User),
+            find: (email: string) => {
+                const filteredUsers = users.filter((user) => user.email === email);
+                return Promise.resolve(filteredUsers);
+            },
+            create: (user: User) => {
+                // const user = { id: Math.floor(Math.random()*999999), email: user.email, password: user.password } as User;
+                user.id = Math.floor(Math.random()*999999);
+                users.push(user);
+                return Promise.resolve(user);
+            },
         };
         const module = await Test.createTestingModule({
             providers: [AuthService, { provide: UsersService, useValue: fakeUsersService }],
@@ -31,7 +40,19 @@ describe('AuthService', () => {
         expect(hash).toBeDefined();
     });
     it('throws an error if user signs up with email already in use', async () => {
-        fakeUsersService.find = () => Promise.resolve([{ email: 's2e@pleas.e2', id: 1, password: '1' } as User]);
-        await expect(service.signUp('pleas2ee', 'asd')).rejects.toThrow();
+        await service.signUp('3242@asd.com', 'password');
+        await expect(service.signUp('3242@asd.com', 'asd')).rejects.toThrow();
+    });
+    it('throws an error if signin is called with an unused email', async () => {
+        await expect(service.signIn('asda@sda.com', 'spasdpasd')).rejects.toThrow();
+    });
+    it('throws if an invalid password is provided', async () => {
+        await service.signUp('3242@asd.com', 'password');
+        await expect(service.signIn('3242@asd.com', 'passwords')).rejects.toThrow();
+    });
+    it('returns a user if a correct password is provided', async () => {
+        await service.signUp('sad@sad.sad', 'sad');
+        const user = await service.signIn('sad@sad.sad', 'sad');
+        expect(user).toBeDefined();
     });
 });

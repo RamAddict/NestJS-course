@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session, UseGuards, UseInterceptors } from '@nestjs/common';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { CurrentUserInterceptor } from 'src/interceptors/current-user.interceptor';
-import { Serialize } from 'src/interceptors/generic-class-serializer.interceptor';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { CurrentUserInterceptor } from '../interceptors/current-user.interceptor';
+import { Serialize } from '../interceptors/generic-class-serializer.interceptor';
 import { AuthService } from './auth/auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
