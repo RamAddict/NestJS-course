@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CurrentUserInterceptor } from 'src/interceptors/current-user.interceptor';
+import { CurrentUserInterceptor } from '../interceptors/current-user.interceptor';
 import { AuthService } from './auth/auth.service';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
