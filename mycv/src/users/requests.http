@@ -1,13 +1,7 @@
-POST http://localhost:3000/reports
+POST http://localhost:3000/auth/signin
 content-type: application/json
 
 {
-    "make": "toyota",
-    "model": "corolla",
-    "year": 1980,
-    "mileage": 40300,
-    "lng": 0,
-    "lat": 0,
-    "price": 9000
+    "email": "please@stop.com",
+    "password": "cancian"
 }
-
