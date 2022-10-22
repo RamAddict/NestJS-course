@@ -24,7 +24,7 @@ export class ReportDto {
     @Expose()
     id: number;
 
-    @Transform(({obj}) => {console.log(obj); return obj.user})
+    @Transform(({obj}) => {console.log(obj); return obj.user.id})
     @Expose()
     userId: number;
 }

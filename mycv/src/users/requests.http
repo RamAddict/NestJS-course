@@ -1,7 +1,7 @@
-POST http://localhost:3000/auth/signin
+POST http://localhost:3000/auth/signup
 content-type: application/json
 
 {
-    "email": "please@stop.com",
+    "email": "please@stosp.com",
     "password": "cancian"
 }

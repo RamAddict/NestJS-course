@@ -1,5 +1,5 @@
 ### approve existsing report
-PATCH http://localhost:3000/reports/25
+PATCH http://localhost:3000/reports/28
 content-type: application/json
 
 {
