@@ -19,3 +19,17 @@ content-type: application/json
     "price": 9000
 }
 
+### get estimate
+GET http://localhost:3000/reports?make=toyota&model=corolla&lng=0&lat=0&mileage=20000&year=1980
+content-type: application/json
+
+{
+    "make": "toyota",
+    "model": "corolla",
+    "year": 1980,
+    "mileage": 40300,
+    "lng": 0,
+    "lat": 0,
+    "price": 9000
+}
+
